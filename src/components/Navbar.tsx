@@ -1,22 +1,17 @@
-import { useState } from "react";
-
+import { Link } from "react-router-dom";
 interface NavBarProps {
   brandName: string;
   imageSrcPath: string;
-  navItems: string[];
   isAuthenticated: boolean;
-  onLogin: () => void;
   onLogout: () => void;
-  onNavItemClicked: (itemName: string) => void;
 }
 
-function NavBar({ brandName, imageSrcPath, navItems, isAuthenticated, onLogin, onLogout, onNavItemClicked }: NavBarProps) {
-  const [selectedIndex, setSelectedIndex] = useState(-1);
-  const onClickHandler = (index:number)=>{
-    setSelectedIndex(index);
-    const selectedItem = navItems[index];
-    onNavItemClicked(selectedItem)
-  }
+function NavBar({
+  brandName,
+  imageSrcPath,
+  isAuthenticated,
+  onLogout,
+}: NavBarProps) {
   return (
     <nav className="navbar navbar-expand-md navbar-light bg-white shadow">
       <div className="container-fluid">
@@ -41,42 +36,58 @@ function NavBar({ brandName, imageSrcPath, navItems, isAuthenticated, onLogin, o
         >
           <span className="navbar-toggler-icon" />
         </button>
-        <div
-          className="collapse
-         navbar-collapse"
-          id="navbarSupportedContent"
-        >
-          <ul className="navbar-nav me-auto mb-2 mb-md-1">
-            {navItems.map((items, index) => (
-              <li
-                key={items}
-                className="nav-item"
-                onClick={() => onClickHandler(index)}
-              >
-                <span
-                  style={{cursor:'pointer'}}
-                  className={
-                    selectedIndex === index
-                      ? "nav-link active fw-bold"
-                      : "nav-link"
-                  }
-                >
-                  {items}
-                </span>
-              </li>
-            ))}
-          </ul>
-          {/* Render login/logout button based on authentication status */}
+        <div className="collapse navbar-collapse" id="navbarSupportedContent">
           {isAuthenticated ? (
-            <button className="btn btn-outline-primary me-3" onClick={onLogout}>
-              Logout
-            </button>
+            <>
+              <ul
+                className="navbar-nav me-auto mb-2 mb-md-1"
+                style={{ display: "flex", flexDirection: "row", width: "100%" }}
+              >
+                <li className="nav-item">
+                  <span style={{ cursor: "pointer" }} className={"nav-link"}>
+                    Home
+                  </span>
+                </li>
+                <li className="nav-item">
+                  <span style={{ cursor: "pointer" }} className={"nav-link"}>
+                    Your Collection
+                  </span>
+                </li>
+
+                <li className="nav-item">
+                  <span style={{ cursor: "pointer" }} className={"nav-link"}>
+                    Your Point is ?
+                  </span>
+                </li>
+              </ul>
+              <button
+                className="btn btn-outline-primary me-3"
+                onClick={onLogout}
+              >
+                Logout
+              </button>
+            </>
           ) : (
-            <button className="btn btn-primary me-3" onClick={onLogin}>
-              Login
-            </button>
+            <>
+              <ul
+                className="navbar-nav me-auto mb-2 mb-md-1"
+                style={{ display: "flex", flexDirection: "row", width: "100%" }}
+              >
+                <li className="nav-item">
+                  <span style={{ cursor: "pointer" }} className={"nav-link"}>
+                    Home
+                  </span>
+                </li>
+              </ul>
+              <Link
+                to="/login"
+                className="login-link"
+                style={{ margin: "auto 10px" }}
+              >
+                Login
+              </Link>
+            </>
           )}
-          
         </div>
       </div>
     </nav>
